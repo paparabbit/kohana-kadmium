@@ -9,9 +9,23 @@
 		if (count($field->thumbnails)) {
 			for ($i = count($field->thumbnails); $i--; $i > -1) {
 				$thumbnail = $field->thumbnails[$i];
+
+                // Handle suffixes
+
+                if ($thumbnail['suffix']){
+
+                    $parts = explode('.',$model->{$field->name});
+                    $parts[count($parts)-2] .= $thumbnail['suffix'];
+                    $name = implode('.',$parts);
+
+                }else{
+
+                    $name = $model->{$field->name};
+                }
+
 				if (!isset($thumbnail['hide_in_admin_list'])) {
 					echo '<li>';
-					echo Html::image($field->get_web_path($thumbnail['path'], $i) . $model->{$field->name});
+					echo Html::image($field->get_web_path($thumbnail['path'], $i) . $name);
 					echo '</li>';
 				}
 			}
